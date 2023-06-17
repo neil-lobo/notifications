@@ -4,9 +4,11 @@ import { ChatClient } from "@kararty/dank-twitch-irc";
 export default class TwitchConnection extends Connection {
     client: ChatClient;
     channels: string[];
+    opts: TwitchConnectionOptions;
 
     constructor(label: string, opts: TwitchConnectionOptions) {
-        super(Platform.TWITCH, label, opts);
+        super(Platform.TWITCH, label);
+        this.opts = opts;
         this.client = this.initializeClient(opts);
         this.channels = opts.channels;
     }
