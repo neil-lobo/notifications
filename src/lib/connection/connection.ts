@@ -11,7 +11,7 @@ export interface TwitchConnectionOptions {
 }
 
 export interface DiscordConnectionOptions {
-    webhook: string
+    webhooks: string[]
 }
 
 export enum HTTPConnectionMethod {
