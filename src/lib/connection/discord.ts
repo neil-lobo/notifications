@@ -3,8 +3,8 @@ import { Connection, Platform, DiscordConnectionOptions } from "./connection.js"
 export default class DiscordConnection extends Connection {
     webhook: URL;
 
-    constructor(opts: DiscordConnectionOptions) {
-        super(Platform.DISCORD, opts);
+    constructor(label: string, opts: DiscordConnectionOptions) {
+        super(Platform.DISCORD, label, opts);
         this.webhook = new URL(opts.webhook)
     }
 

@@ -30,10 +30,12 @@ export type ConnectionOptions = TwitchConnectionOptions | DiscordConnectionOptio
 export abstract class Connection {
     opts;
     platform;
+    label;
     
-    constructor(platform: Platform, opts: ConnectionOptions) {
+    constructor(platform: Platform, label: string, opts: ConnectionOptions) {
         this.opts = opts;
         this.platform = platform;
+        this.label = label;
     }
 
     abstract send(message: any): void;

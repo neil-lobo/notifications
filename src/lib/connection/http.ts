@@ -1,8 +1,8 @@
 import { Connection, Platform, HTTPConnectionOptions } from "./connection.js";
 
 export default class HTTPConnection extends Connection {
-    constructor(opts: HTTPConnectionOptions) {
-        super(Platform.HTTP, opts);
+    constructor(label: string, opts: HTTPConnectionOptions) {
+        super(Platform.HTTP, label, opts);
     }
 
     send(message: any) {

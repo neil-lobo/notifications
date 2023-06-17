@@ -8,17 +8,17 @@ const connections: Connection[] = [];
 for(let connection of config.connections) {
     switch(connection.platform) {
         case "TWITCH": {
-            const conn = new TwitchConnection(connection.options);
+            const conn = new TwitchConnection(connection.label, connection.options);
             connections.push(conn);
             break;
         }
         case "DISCORD": {
-            const conn = new DiscordConnection(connection.options);
+            const conn = new DiscordConnection(connection.label, connection.options);
             connections.push(conn)
             break;
         }
         case "HTTP": {
-            const conn = new HTTPConnection(connection.options);
+            const conn = new HTTPConnection(connection.label, connection.options);
             connections.push(conn)
             break;
         }

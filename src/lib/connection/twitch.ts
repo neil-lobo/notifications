@@ -5,8 +5,8 @@ export default class TwitchConnection extends Connection {
     client: ChatClient;
     channels: string[];
 
-    constructor(opts: TwitchConnectionOptions) {
-        super(Platform.TWITCH, opts);
+    constructor(label: string, opts: TwitchConnectionOptions) {
+        super(Platform.TWITCH, label, opts);
         this.client = this.initializeClient(opts);
         this.channels = opts.channels;
     }
