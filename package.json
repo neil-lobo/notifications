@@ -1,0 +1,24 @@
+{
+  "type": "module",
+  "name": "notifications",
+  "version": "0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "ts-node --esm src/index.ts",
+    "dev": "nodemon --esm src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Neil Lobo",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
+  },
+  "dependencies": {
+    "@kararty/dank-twitch-irc": "^6.0.0",
+    "chalk": "^5.2.0"
+  }
+}
