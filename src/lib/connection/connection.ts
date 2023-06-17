@@ -28,9 +28,9 @@ export interface HTTPConnectionOptions {
 export type ConnectionOptions = TwitchConnectionOptions | DiscordConnectionOptions | HTTPConnectionOptions
 
 export abstract class Connection {
-    opts;
-    platform;
-    label;
+    opts: ConnectionOptions;
+    platform: Platform;
+    label: string;
     
     constructor(platform: Platform, label: string, opts: ConnectionOptions) {
         this.opts = opts;
