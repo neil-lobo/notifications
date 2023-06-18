@@ -1,9 +1,18 @@
+if (process.env.DOTENV) {
+    (await import("dotenv")).config();
+}
+
 import config from "./lib/config.js";
 import { Connection } from "./lib/connection/connection.js";
 import HTTPConnection from "./lib/connection/http.js";
 import { TwitchConnection, DiscordConnection } from "./lib/connections.js";
+import express from "express";
+import { routes } from "./routes/routes.js";
 
-const connections = new Map<string, Connection>();
+const app = express();
+const PORT = process.env.port ?? 3000
+const URL = process.env.url ?? "http://localhost"
+export const connections = new Map<string, Connection>();
 
 for(let connection of config.connections) {
     switch(connection.platform) {
@@ -25,3 +34,8 @@ for(let connection of config.connections) {
     }
     console.log(`[CONNECTION] ${connection.label} | ${connection.platform}`);
 }
+
+app.use(routes)
+app.listen(PORT, () => {
+    console.log(`[REST] Listening on ${URL}:${PORT}`);
+})
