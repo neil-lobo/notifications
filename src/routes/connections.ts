@@ -1,9 +1,12 @@
 import { Request, Response, Router, json } from "express";
 import { connections as c } from "../index.js";
+import { auth } from "../lib/middleware/auth.js";
 
 const router = Router();
 
-router.get("/connections", (req: Request, res: Response) => {
+const middleware = [auth]
+
+router.get("/connections", middleware, (req: Request, res: Response) => {
     const out = Array.from(c).map(conn => {
         return {
             label: conn[1].label,
