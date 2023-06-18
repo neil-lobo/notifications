@@ -1,5 +1,5 @@
 import { Connection, MessageOptions, Platform, TwitchConnectionOptions } from "./connection.js";
-import { ChatClient } from "@kararty/dank-twitch-irc";
+import { AlternateMessageModifier, ChatClient, SlowModeRateLimiter } from "@kararty/dank-twitch-irc";
 
 export default class TwitchConnection extends Connection {
     client: ChatClient;
@@ -18,6 +18,9 @@ export default class TwitchConnection extends Connection {
             username: opts.username,
             password: opts.password,
         })
+
+        client.use(new AlternateMessageModifier(client))
+        client.use(new SlowModeRateLimiter(client))
 
         client.on("ready", () => {
             console.log(`[IRC] Logged in as ${opts.username}`);
