@@ -1,4 +1,4 @@
-import { Connection, Platform, HTTPConnectionOptions } from "./connection.js";
+import { Connection, Platform, HTTPConnectionOptions, MessageOptions } from "./connection.js";
 
 export default class HTTPConnection extends Connection {
     opts: HTTPConnectionOptions;
@@ -8,7 +8,7 @@ export default class HTTPConnection extends Connection {
         this.opts = opts;
     }
 
-    send(message: any) {
+    send(message: MessageOptions) {
         console.log(message);
     }
 }

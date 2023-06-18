@@ -1,10 +1,4 @@
-import { Connection, Platform, DiscordConnectionOptions } from "./connection.js";
-
-type DiscordMessage = {
-    from: string,
-    title: string,
-    message: string
-}
+import { Connection, Platform, DiscordConnectionOptions, MessageOptions } from "./connection.js";
 
 export default class DiscordConnection extends Connection {
     webhooks: URL[];
@@ -19,11 +13,11 @@ export default class DiscordConnection extends Connection {
         }
     }
 
-    send(data: DiscordMessage) {
+    send(data: MessageOptions) {
         this.broadcastNotification(data);
     }
 
-    private broadcastNotification(data: DiscordMessage) {
+    private broadcastNotification(data: MessageOptions) {
         for(let webhook of this.webhooks) {
             fetch(webhook, {
                 method: "POST",

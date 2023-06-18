@@ -1,4 +1,4 @@
-import { Connection, Platform, TwitchConnectionOptions } from "./connection.js";
+import { Connection, MessageOptions, Platform, TwitchConnectionOptions } from "./connection.js";
 import { ChatClient } from "@kararty/dank-twitch-irc";
 
 export default class TwitchConnection extends Connection {
@@ -32,13 +32,18 @@ export default class TwitchConnection extends Connection {
         return client
     }
 
-    send(message: any) {
+    send(message: MessageOptions) {
         this.broadcastNotification(message);
     }
 
-    private broadcastNotification(message: string) {
+    private broadcastNotification(message: MessageOptions) {
+        let msg = (message.from ? `[ ${message.from} ] ` : "") + (message.title ? `${message.title} | ` : "") + message.message;
         for(let channel of this.channels) {
-            this.client.say(channel, message);
+            if (message.highlighted) {
+                this.client.me(channel, msg);
+            } else {
+                this.client.say(channel, msg);
+            }
         }
     }
 }

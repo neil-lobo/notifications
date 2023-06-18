@@ -25,6 +25,13 @@ export interface HTTPConnectionOptions {
     payload: any
 }
 
+export interface MessageOptions {
+    title?: string,
+    message: string,
+    from?: string
+    highlighted?: boolean
+}
+
 export abstract class Connection {
     platform: Platform;
     label: string;
@@ -34,5 +41,5 @@ export abstract class Connection {
         this.label = label;
     }
 
-    abstract send(message: any): void;
+    abstract send(message: MessageOptions): void;
 }
