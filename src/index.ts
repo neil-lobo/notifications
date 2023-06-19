@@ -10,8 +10,8 @@ import express from "express";
 import { routes } from "./routes/routes.js";
 
 const app = express();
-const PORT = process.env.port ?? 3000
-const URL = process.env.url ?? "http://localhost"
+const PORT = process.env.PORT ?? 3000
+const URL = process.env.URL ?? "http://localhost"
 export const connections = new Map<string, Connection>();
 
 for(let connection of config.connections) {
