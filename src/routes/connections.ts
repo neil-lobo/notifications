@@ -1,4 +1,4 @@
-import { Request, Response, Router, json } from "express";
+import { Request, Response, Router } from "express";
 import { connections as c } from "../index.js";
 import { auth } from "../lib/middleware/auth.js";
 

@@ -7,9 +7,7 @@ const SECRET = config.jwt.secret;
 export function verify(token: string) {
     try {
         return jsonwebtoken.verify(token, SECRET)
-    } catch(err) {
-        console.log("invalid token");
-    }
+    } catch(err) {}
 }
 
 // Header format:
