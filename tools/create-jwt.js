@@ -4,7 +4,7 @@ import prompts from "prompts";
 
 const SECRET = config.jwt.secret;
 
-const { user, labels, actions } = await prompts([
+let { user, labels, actions } = await prompts([
     {
         type: "text",
         name: "user",
@@ -21,6 +21,13 @@ const { user, labels, actions } = await prompts([
         message: "Token Actions (comma separated):"
     },
 ])
+
+if (labels[0] === "") {
+    labels = []
+}
+if (actions[0] === "") {
+    actions = []
+}
 
 try {
     const payload = {
