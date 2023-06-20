@@ -8,13 +8,26 @@ import HTTPConnection from "./lib/connection/http.js";
 import { TwitchConnection, DiscordConnection } from "./lib/connections.js";
 import express from "express";
 import { routes } from "./routes/routes.js";
+import mongo from "./lib/db.js";
 
 const app = express();
 const PORT = process.env.PORT ?? 3000
 const URL = process.env.URL ?? "http://localhost"
 export const connections = new Map<string, Connection>();
+let loadedConnections:any = [];
 
-for(let connection of config.connections) {
+if (config.db) {
+    try {
+        await mongo.connect();
+        loadedConnections = await mongo.db("notification").collection("connections").find({}).toArray();
+    } finally {
+        await mongo.close()
+    }
+} else {
+    loadedConnections = config.connections
+}
+    
+for(let connection of loadedConnections) {
     switch(connection.platform) {
         case "TWITCH": {
             const conn = new TwitchConnection(connection.label, connection.options);
