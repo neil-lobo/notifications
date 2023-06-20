@@ -37,7 +37,7 @@ function verify(req: Request, res: Response, next: NextFunction) {
         })
     }
 
-    if (!data.labels.includes(body.label)) {
+    if (!data.labels?.includes(body.label)) {
         return res.status(403).json({
             status: 403,
             message: `Missing '${body.label}' label on token`
