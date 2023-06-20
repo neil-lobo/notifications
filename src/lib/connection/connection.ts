@@ -1,41 +1,41 @@
 export enum Platform {
     TWITCH = "TWITCH",
     DISCORD = "DISCORD",
-    HTTP = "HTTP"
+    HTTP = "HTTP",
 }
 
 export interface TwitchConnectionOptions {
-    username: string,
-    password: string,
-    channels: string[]
+    username: string;
+    password: string;
+    channels: string[];
 }
 
 export interface DiscordConnectionOptions {
-    webhooks: string[]
+    webhooks: string[];
 }
 
 export enum HTTPConnectionMethod {
     GET = "GET",
-    POST = "POST"
+    POST = "POST",
 }
 
 export interface HTTPConnectionOptions {
-    method: HTTPConnectionMethod
-    url: string
-    payload: any
+    method: HTTPConnectionMethod;
+    url: string;
+    payload: any;
 }
 
 export interface MessageOptions {
-    title?: string,
-    message: string,
-    from?: string
-    highlighted?: boolean
+    title?: string;
+    message: string;
+    from?: string;
+    highlighted?: boolean;
 }
 
 export abstract class Connection {
     platform: Platform;
     label: string;
-    
+
     constructor(platform: Platform, label: string) {
         this.platform = platform;
         this.label = label;

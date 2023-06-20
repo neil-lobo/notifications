@@ -1,4 +1,9 @@
-import { Connection, Platform, DiscordConnectionOptions, MessageOptions } from "./connection.js";
+import {
+    Connection,
+    Platform,
+    DiscordConnectionOptions,
+    MessageOptions,
+} from "./connection.js";
 
 export default class DiscordConnection extends Connection {
     webhooks: URL[];
@@ -8,7 +13,7 @@ export default class DiscordConnection extends Connection {
         super(Platform.DISCORD, label);
         this.opts = opts;
         this.webhooks = [];
-        for(let webhook of opts.webhooks){
+        for (const webhook of opts.webhooks) {
             this.webhooks.push(new URL(webhook));
         }
     }
@@ -18,24 +23,24 @@ export default class DiscordConnection extends Connection {
     }
 
     private broadcastNotification(data: MessageOptions) {
-        for(let webhook of this.webhooks) {
+        for (const webhook of this.webhooks) {
             fetch(webhook, {
                 method: "POST",
                 headers: {
-                    "content-type": "application/json"  
+                    "content-type": "application/json",
                 },
                 body: JSON.stringify({
                     embeds: [
                         {
                             title: data.title,
                             author: {
-                                name: data.from
+                                name: data.from,
                             },
-                            description: data.message
-                        }
-                    ]
-                })
-            })
+                            description: data.message,
+                        },
+                    ],
+                }),
+            });
         }
     }
 }

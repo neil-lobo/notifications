@@ -5,6 +5,6 @@ import { connection } from "./connection.js";
 
 export const routes = Router();
 
-routes.use(connections)
-routes.use(connection)
-routes.use(notify)
+routes.use(connections);
+routes.use(connection);
+routes.use(notify);

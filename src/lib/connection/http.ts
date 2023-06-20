@@ -1,4 +1,9 @@
-import { Connection, Platform, HTTPConnectionOptions, MessageOptions } from "./connection.js";
+import {
+    Connection,
+    Platform,
+    HTTPConnectionOptions,
+    MessageOptions,
+} from "./connection.js";
 
 export default class HTTPConnection extends Connection {
     opts: HTTPConnectionOptions;

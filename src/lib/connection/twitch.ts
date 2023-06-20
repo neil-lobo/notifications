@@ -1,5 +1,14 @@
-import { Connection, MessageOptions, Platform, TwitchConnectionOptions } from "./connection.js";
-import { AlternateMessageModifier, ChatClient, SlowModeRateLimiter } from "@kararty/dank-twitch-irc";
+import {
+    Connection,
+    MessageOptions,
+    Platform,
+    TwitchConnectionOptions,
+} from "./connection.js";
+import {
+    AlternateMessageModifier,
+    ChatClient,
+    SlowModeRateLimiter,
+} from "@kararty/dank-twitch-irc";
 
 export default class TwitchConnection extends Connection {
     client: ChatClient;
@@ -17,22 +26,22 @@ export default class TwitchConnection extends Connection {
         const client = new ChatClient({
             username: opts.username,
             password: opts.password,
-        })
+        });
 
-        client.use(new AlternateMessageModifier(client))
-        client.use(new SlowModeRateLimiter(client))
+        client.use(new AlternateMessageModifier(client));
+        client.use(new SlowModeRateLimiter(client));
 
         client.on("ready", () => {
             console.log(`[IRC] Logged in as ${opts.username}`);
-            client.joinAll(opts.channels)
-        })
+            client.joinAll(opts.channels);
+        });
 
-        client.on("JOIN", msg => {
+        client.on("JOIN", (msg) => {
             console.log(`[JOIN] #${msg.channelName}`);
-        })
+        });
 
         client.connect();
-        return client
+        return client;
     }
 
     send(message: MessageOptions) {
@@ -40,8 +49,11 @@ export default class TwitchConnection extends Connection {
     }
 
     private broadcastNotification(message: MessageOptions) {
-        let msg = (message.from ? `[ ${message.from} ] ` : "") + (message.title ? `${message.title} | ` : "") + message.message;
-        for(let channel of this.channels) {
+        const msg =
+            (message.from ? `[ ${message.from} ] ` : "") +
+            (message.title ? `${message.title} | ` : "") +
+            message.message;
+        for (const channel of this.channels) {
             if (message.highlighted) {
                 this.client.me(channel, msg);
             } else {
