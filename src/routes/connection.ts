@@ -6,25 +6,46 @@ import { Platform } from "../lib/connection/connection.js";
 import config from "../lib/config.js";
 import { deleteOne, findOne, insertOne } from "../lib/db.js";
 import { createConnection } from "../lib/connections.js";
+import Joi from "joi";
+import { validateBody } from "../lib/middleware/validate.js";
 
 const router = Router();
 
+const postSchema = Joi.alternatives().try(
+    Joi.object({
+        label: Joi.string().required(),
+        platform: "TWITCH",
+        options: {
+            username: Joi.string().required(),
+            password: Joi.string().required(),
+            channels: Joi.array().items(Joi.string()).required(),
+        },
+    }),
+    Joi.object({
+        label: Joi.string().required(),
+        platform: "DISCORD",
+        options: {
+            webhooks: Joi.array().items(Joi.string()).required(),
+        },
+    }),
+    Joi.object({
+        label: Joi.string().required(),
+        platform: "HTTP",
+        options: {},
+    })
+);
+
+const deleteSchema = Joi.object({
+    label: Joi.string().required(),
+});
+
 function verify(action: string) {
     return async (req: Request, res: Response, next: NextFunction) => {
-        const label = req.body.label;
-
         // need database configured to use endpoints
         if (!config.db) {
             return res.status(503).json({
                 status: 503,
                 message: "Service not configured to create/delete connections",
-            });
-        }
-
-        if (!label) {
-            return res.status(400).json({
-                status: 400,
-                message: "Missing `label` field",
             });
         }
 
@@ -44,62 +65,11 @@ function verify(action: string) {
 
 router.post(
     "/connection",
-    [auth, json(), verify("connection:create")],
+    [auth, json(), validateBody(postSchema), verify("connection:create")],
     async (req: Request, res: Response) => {
         const platform: Platform = req.body.platform;
         const label: string = req.body.label;
         const options = req.body.options;
-
-        if (!platform) {
-            return res.status(400).json({
-                status: 400,
-                message: "Missing `platform` field",
-            });
-        }
-
-        if (!Object.values(Platform).includes(platform)) {
-            return res.status(400).json({
-                status: 400,
-                message: "Invalid `platform` field",
-            });
-        }
-
-        switch (platform) {
-            case Platform.TWITCH: {
-                if (!options?.username) {
-                    return res.status(400).json({
-                        status: 400,
-                        message: "Missing `options.username` field",
-                    });
-                }
-                if (!options?.password) {
-                    return res.status(400).json({
-                        status: 400,
-                        message: "Missing `options.password` field",
-                    });
-                }
-                if (!options?.channels) {
-                    return res.status(400).json({
-                        status: 400,
-                        message: "Missing `options.channels` field",
-                    });
-                }
-
-                break;
-            }
-            case Platform.DISCORD: {
-                if (!options?.webhooks) {
-                    return res.status(400).json({
-                        status: 400,
-                        message: "Missing `options.webhooks` field",
-                    });
-                }
-                break;
-            }
-            case Platform.HTTP: {
-                break;
-            }
-        }
 
         const existing = await findOne({ label: label });
         if (existing) {
@@ -136,12 +106,12 @@ router.post(
 
 router.delete(
     "/connection",
-    [auth, json(), verify("connection:delete")],
+    [auth, json(), validateBody(deleteSchema), verify("connection:delete")],
     async (req: Request, res: Response) => {
         const label = req.body.label;
         const platform = req.body.platform;
         const { acknowledged, deletedCount } = await deleteOne({
-            label: label,
+            label,
         });
 
         if (!acknowledged) {

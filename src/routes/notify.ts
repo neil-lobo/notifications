@@ -3,6 +3,8 @@ import { auth } from "../lib/middleware/auth.js";
 import { connections } from "../index.js";
 import { MessageOptions } from "../lib/connection/connection.js";
 import jsonwebtoken from "jsonwebtoken";
+import Joi from "joi";
+import { validateBody } from "../lib/middleware/validate.js";
 
 interface NotifyBody {
     label: string;
@@ -11,22 +13,17 @@ interface NotifyBody {
 
 const router = Router();
 
+const schema = Joi.object({
+    label: Joi.string().required(),
+    options: {
+        title: Joi.string().optional(),
+        message: Joi.string().required(),
+        from: Joi.string().optional(),
+    },
+});
+
 function verify(req: Request, res: Response, next: NextFunction) {
     const body: NotifyBody = req.body;
-    if (!body.label) {
-        return res.status(400).json({
-            status: 400,
-            message: "Missing `label` field",
-        });
-    }
-
-    if (!body.options?.message) {
-        return res.status(400).json({
-            status: 400,
-            message: "Missing `options.message` field",
-        });
-    }
-
     const token: any = req.headers.authorization;
     const data: any = jsonwebtoken.decode(token);
 
@@ -47,7 +44,7 @@ function verify(req: Request, res: Response, next: NextFunction) {
     next();
 }
 
-const middleware = [auth, json(), verify];
+const middleware = [auth, json(), validateBody(schema), verify];
 
 router.post("/notify", middleware, (req: Request, res: Response) => {
     const body: NotifyBody = req.body;
