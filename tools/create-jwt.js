@@ -4,7 +4,7 @@ import prompts from "prompts";
 
 const SECRET = config.jwt.secret;
 
-const { user, labels } = await prompts([
+const { user, labels, actions } = await prompts([
     {
         type: "text",
         name: "user",
@@ -13,7 +13,12 @@ const { user, labels } = await prompts([
     {
         type: "list",
         name: "labels",
-        message: "Notification Labels (comma separated):"
+        message: "Token Labels (comma separated):"
+    },
+    {
+        type: "list",
+        name: "actions",
+        message: "Token Actions (comma separated):"
     },
 ])
 
@@ -21,6 +26,7 @@ try {
     const payload = {
         user,
         labels,
+        actions,
         iss: "notifications/tools"
     }
     const token = jsonwebtoken.sign(payload, SECRET)
