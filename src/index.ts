@@ -25,7 +25,7 @@ if (config.db) {
 for(let connection of loadedConnections) {
     const conn = createConnection(connection.platform, connection.label, connection.options);
     connections.set(connection.label, conn)
-    console.log(`[CONNECTION] ${connection.label} | ${connection.platform}`);
+    console.log(`[CREATE CONNECTION] ${connection.label} | ${connection.platform}`);
 }
 
 app.use(routes)

@@ -121,6 +121,7 @@ router.post("/connection", [auth, json(), verify("connection:create")], async (r
 
     const conn = createConnection(platform, label, options)
     connections.set(label, conn)
+    console.log(`[CREATE CONNECTION] ${label} | ${platform}`);
 
     return res.json({
         status: 200,
@@ -130,6 +131,7 @@ router.post("/connection", [auth, json(), verify("connection:create")], async (r
 
 router.delete("/connection", [auth, json(), verify("connection:delete")], async (req: Request, res: Response) => {
     const label = req.body.label
+    const platform = req.body.platform
     const {acknowledged, deletedCount} = await deleteOne({label: label})
 
     if (!acknowledged) {
@@ -147,6 +149,7 @@ router.delete("/connection", [auth, json(), verify("connection:delete")], async 
     }
 
     connections.delete(label)
+    console.log(`[DELETE CONNECTION] ${label} | ${platform}`);
 
     res.json({
         status: 200,
