@@ -109,7 +109,6 @@ router.delete(
     [auth, json(), validateBody(deleteSchema), verify("connection:delete")],
     async (req: Request, res: Response) => {
         const label = req.body.label;
-        const platform = req.body.platform;
         const { acknowledged, deletedCount } = await deleteOne({
             label,
         });
@@ -129,7 +128,7 @@ router.delete(
         }
 
         connections.delete(label);
-        console.log(`[DELETE CONNECTION] ${label} | ${platform}`);
+        console.log(`[DELETE CONNECTION] ${label}`);
 
         res.json({
             status: 200,
