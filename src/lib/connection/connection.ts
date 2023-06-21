@@ -22,7 +22,8 @@ export enum HTTPConnectionMethod {
 export interface HTTPConnectionOptions {
     method: HTTPConnectionMethod;
     url: string;
-    payload: any;
+    headers?: any;
+    body?: any;
 }
 
 export interface MessageOptions {

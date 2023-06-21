@@ -31,7 +31,7 @@ const postSchema = Joi.alternatives().try(
     Joi.object({
         label: Joi.string().required(),
         platform: "HTTP",
-        options: {},
+        options: Joi.object().required(),
     })
 );
 
