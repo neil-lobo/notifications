@@ -49,7 +49,7 @@ function verify(action: string) {
             });
         }
 
-        const token: any = req.headers.authorization;
+        const token: any = req.headers.authorization?.slice(7);
         const data: any = jsonwebtoken.decode(token);
 
         if (!data.actions?.includes(action)) {

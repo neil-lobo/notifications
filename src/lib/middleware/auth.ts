@@ -13,16 +13,18 @@ export function verify(token: string) {
 }
 
 // Header format:
-// Authorization: <jwt>
+// Authorization: Bearer <jwt>
 export function auth(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization;
+    let token = req.headers.authorization;
 
-    if (!token) {
+    if (!token || !token.startsWith("Bearer ")) {
         return res.status(400).json({
             status: 400,
             message: "Missing token",
         });
     }
+
+    token = token.slice(7);
 
     const data = verify(token);
     if (!data) {

@@ -28,8 +28,8 @@ export default class HTTPConnection extends Connection {
             headers: this.headers,
             body: JSON.stringify({
                 ...this.body,
-                options
-            })
+                options,
+            }),
         });
     }
 }

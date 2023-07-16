@@ -24,7 +24,7 @@ const schema = Joi.object({
 
 function verify(req: Request, res: Response, next: NextFunction) {
     const body: NotifyBody = req.body;
-    const token: any = req.headers.authorization;
+    const token: any = req.headers.authorization?.slice(7);
     const data: any = jsonwebtoken.decode(token);
 
     if (!connections.has(body.label)) {
